@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Valentine Surprise ❤️</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+<style>
+  body {
+    margin: 0;
+    height: 100vh;
+    font-family: "Segoe UI", sans-serif;
+    background: linear-gradient(135deg, #ffd6e7, #ffeaf3);
+    overflow: hidden;
+    color: #000;
+    perspective: 800px;
+  }
+
+  .center {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+  }
+
+  h1, p, button {
+    color: #000;
+    z-index: 5;
+  }
+
+  /* Penguin */
+  #penguin {
+    font-size: 80px;
+    cursor: pointer;
+    z-index: 5;
+    animation: jump 0.8s ease-in-out infinite;
+  }
+
+  @keyframes jump {
+    0% { transform: translateY(0); }
+    50% { transform: translateY(-20px); }
+    100% { transform: translateY(0); }
+  }
+
+  /* POP-OUT emojis */
+  .pop {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform-style: preserve-3d;
+    font-size: 48px;
+    pointer-events: none;
+    animation: popOut 1.2s ease-out forwards;
+    z-index: 2;
+  }
+
+  @keyframes popOut {
+    0% {
+      transform: translate(-50%, -50%) translateZ(-200px) scale(0.2);
+      opacity: 0;
+      filter: blur(2px);
+    }
+    30% { opacity: 1; filter: blur(0); }
+    100% {
+      transform:
+        translate(calc(-50% + var(--x)), calc(-50% + var(--y)))
+        translateZ(300px) scale(3);
+      opacity: 0;
+      filter: blur(3px);
+    }
+  }
+
+  button {
+    padding: 12px 25px;
+    font-size: 18px;
+    border: 2px solid #000;
+    border-radius: 30px;
+    cursor: pointer;
+    background: #fff;
+    margin-top: 15px;
+    transition: transform 0.2s ease;
+  }
+
+  #yesBtn {
+    background: #2ecc71;
+  }
+
+  #noBtn {
+    background: #e74c3c;
+    position: relative;
+  }
+
+  .buttons {
+    position: relative;
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+  }
+
+  .screen { display: none; }
+
+  .bounce {
+    display: inline-block;
+    font-size: 36px;
+    animation: bounce 1s infinite alternate;
+  }
+
+  @keyframes bounce {
+    from { transform: translateY(0); }
+    to { transform: translateY(-20px); }
+  }
+</style>
+</head>
+<body>
+
+<!-- INTRO -->
+<div class="center" id="introScreen">
+  <h1>Guess what? I've a surprise for you 💕</h1>
+  <div id="penguin">🐧</div>
+  <p>(Click the penguin 👆)</p>
+</div>
+
+<!-- QUESTION -->
+<div class="center screen" id="questionScreen">
+  <h1>Can I steal you as my Valentine? 💖</h1>
+  <div class="buttons">
+    <button id="yesBtn">Yes 😍</button>
+    <button id="noBtn">No 🙈</button>
+  </div>
+</div>
+
+<!-- YES -->
+<div class="center screen" id="yesScreen">
+  <h1>Deal sealed! My Valentine has been chosen 🥰💋</h1>
+  <button id="openBtn">Open 💌</button>
+</div>
+
+<!-- LETTER -->
+<div class="center screen" id="letterScreen">
+  <h1>Alright, Mr. Valentine ❤️</h1>
+  <p>
+   From the moment you came into my life, everything became brighter and happier 🌸✨. Telisi Teliyaka somewhere i had connection with you, first day ne soulmate anukovadam ento, adi real avvadam ento, everything seems to be magical. I know i'm crazy, mad but adanta nekosame. You are my smile, my comfort, and my favorite person 🥰. I love you more than words can ever say 💖 <br> Happy Valentine’s Day, my forever ❤️😘<br> <br> Since we missed celebrating Valentine week days, here’s a little surprise 💝
+  </p>
+  <button id="startWeekBtn">Start 💖</button>
+</div>
+
+<!-- VALENTINE WEEK -->
+<div class="center screen" id="weekScreen">
+  <h1 id="weekTitle"></h1>
+  <p id="weekText"></p>
+  <button id="nextWeekBtn">Next ➡️</button>
+</div>
+
+<!-- FINAL -->
+<div class="center screen" id="finalScreen">
+  <h1>
+    <span class="bounce">H</span><span class="bounce">A</span><span class="bounce">P</span><span class="bounce">P</span><span class="bounce">Y</span><br>
+    <span class="bounce">V</span><span class="bounce">A</span><span class="bounce">L</span><span class="bounce">E</span><span class="bounce">N</span><span class="bounce">T</span><span class="bounce">I</span><span class="bounce">N</span><span class="bounce">E</span><span class="bounce">’</span><span class="bounce">S</span><br>
+    <span class="bounce">D</span><span class="bounce">A</span><span class="bounce">Y</span> ❤️
+  </h1>
+  <p>No regrets for missing those days… I love you 🕯️❤️</p>
+  <p>I arranged a cute candlelight dinner for us… will you accompany me? 💕</p>
+</div>
+
+<script>
+  const introScreen = document.getElementById("introScreen");
+  const questionScreen = document.getElementById("questionScreen");
+  const yesScreen = document.getElementById("yesScreen");
+  const letterScreen = document.getElementById("letterScreen");
+  const weekScreen = document.getElementById("weekScreen");
+  const finalScreen = document.getElementById("finalScreen");
+
+  const penguin = document.getElementById("penguin");
+  const yesBtn = document.getElementById("yesBtn");
+  const noBtn = document.getElementById("noBtn");
+  const openBtn = document.getElementById("openBtn");
+  const startWeekBtn = document.getElementById("startWeekBtn");
+  const nextWeekBtn = document.getElementById("nextWeekBtn");
+
+  const weekTitle = document.getElementById("weekTitle");
+  const weekText = document.getElementById("weekText");
+
+  let burstInterval = null;
+
+  function startBurst(emoji, speedMs) {
+    if (burstInterval) clearInterval(burstInterval);
+    burstInterval = setInterval(() => {
+      const e = document.createElement("div");
+      e.className = "pop";
+      e.innerText = emoji;
+      const x = (Math.random() * 800 - 400) + "px";
+      const y = (Math.random() * 600 - 300) + "px";
+      e.style.setProperty("--x", x);
+      e.style.setProperty("--y", y);
+      e.style.fontSize = (Math.random() * 40 + 40) + "px";
+      document.body.appendChild(e);
+      setTimeout(() => e.remove(), 1300);
+    }, speedMs);
+  }
+
+  startBurst("❤️", 80);
+
+  penguin.onclick = () => {
+    introScreen.style.display = "none";
+    questionScreen.style.display = "flex";
+  };
+
+  // Scaling
+  let yesScale = 1;
+  let noScale = 1;
+
+  // YES
+  yesBtn.onclick = () => {
+    questionScreen.style.display = "none";
+    yesScreen.style.display = "flex";
+    startBurst("💋", 70);
+  };
+
+  openBtn.onclick = () => {
+    yesScreen.style.display = "none";
+    letterScreen.style.display = "flex";
+    startBurst("❤️", 100);
+  };
+
+  // NO button messages
+  const noMessages = [
+    "Are you sure? 🤨",
+    "Pookie please 🥺",
+    "If you say no, I’ll be sad 😢",
+    "I’ll be upset 😞",
+    "Pleaseeee?? 🥹",
+    "Don’t do this to me 💔"
+  ];
+
+  let noClickCount = 0;
+  let noEscapeMode = false;
+
+  function moveNoButtonInside() {
+  const rect = noBtn.getBoundingClientRect();
+
+  const maxX = window.innerWidth - rect.width;
+  const maxY = window.innerHeight - rect.height;
+
+  const x = Math.random() * Math.max(0, maxX);
+  const y = Math.random() * Math.max(0, maxY);
+
+  noBtn.style.position = "fixed";   // fixed keeps it relative to viewport
+  noBtn.style.left = x + "px";
+  noBtn.style.top = y + "px";
+}
+
+
+  noBtn.addEventListener("click", (e) => {
+    e.preventDefault();
+
+    // Shrink NO
+    noScale -= 0.1;
+    if (noScale < 0.4) noScale = 0.4;
+    noBtn.style.transform = `scale(${noScale})`;
+
+    // Grow YES
+    yesScale += 0.12;
+    if (yesScale > 2) yesScale = 2;
+    yesBtn.style.transform = `scale(${yesScale})`;
+
+    if (!noEscapeMode) {
+      if (noClickCount < noMessages.length) {
+        noBtn.textContent = noMessages[noClickCount];
+        noClickCount++;
+
+        // If just reached last message, enable escape mode but don't move yet
+        if (noClickCount === noMessages.length) {
+          noEscapeMode = true;
+          return;
+        }
+      }
+    } else {
+      // In escape mode, clicking makes it jump away
+      moveNoButtonInside();
+    }
+  });
+
+  // In escape mode, hovering also makes it move
+  noBtn.addEventListener("mouseenter", () => {
+    if (noEscapeMode) {
+      moveNoButtonInside();
+    }
+  });
+
+  // Valentine week
+  const weekDays = [
+    { title: "🌹 Rose Day", text: "Beautiful as you are! 🌹", emoji: "🌹" },
+    { title: "💍 Propose Day", text: "I choose you, today and always… 💍", emoji: "❤️" },
+    { title: "🍫 Chocolate Day", text: "You’re my favorite kind of sweet 😄❤️", emoji: "🍫" },
+    { title: "🧸 Teddy Day", text: "Me as your lifetime gift… 🧸", emoji: "🧸" },
+    { title: "🤞 Promise Day", text: "I may not be perfect, but I promise to always try for you ❤️", emoji: "🤞" },
+    { title: "🫂 Hug Day", text: "Sending you the tightest hug… 🫂", emoji: "🫂" },
+    { title: "💋 Kiss Day", text: "Sealing all this with a kiss… 💋", emoji: "💋" }
+  ];
+
+  let weekIndex = 0;
+
+  startWeekBtn.onclick = () => {
+    letterScreen.style.display = "none";
+    showWeek();
+  };
+
+  function showWeek() {
+    if (weekIndex >= weekDays.length) {
+      weekScreen.style.display = "none";
+      finalScreen.style.display = "flex";
+      startBurst("❤️", 100);
+      startBurst("🕯️", 200);
+      return;
+    }
+    const day = weekDays[weekIndex];
+    weekTitle.innerText = day.title;
+    weekText.innerText = day.text;
+    weekScreen.style.display = "flex";
+    startBurst(day.emoji, 80);
+  }
+
+  nextWeekBtn.onclick = () => {
+    weekIndex++;
+    showWeek();
+  };
+</script>
+
+</body>
+</html>
